@@ -62,3 +62,41 @@ Eventticket is a company that is selling tickets for events like concerts and mu
 - Also, maintaining referential integrity like we use in a relational database is not possible across microservices. 
 - monoliths are hard to maintain because of their complexity, and microservices are hard to deploy and monitor because of their complexity.
 - **The complexities around microservices are harder to tame** than the complexities around monoliths. Choose microservices when you have a really good reason to. If not, use monolithic architecture.
+
+## Deploying Microservices: Containers 
+Because we want to automate deployment and scale a microservice, it's important to have it as portable as possible.  
+Wouldn't it be great if we could stick every microservice with all its dependencies, including .NET Core, in a package that can move from one system to another in a safe and reliable way? Well, we can.  
+That is what the **container** is, and **Docker** is a tool that helps with building and running containers. 
+
+## Microservice Communication
+Communication between different services can be done in different ways.  
+####  If we take a step back and think of a "regular application" built with C#, so not built with microservices in mind that is, what do we have in the end?  
+  We have probably a large set of classes or components. They interact with one another through, indeed, method calls, so, we instantiate a new object and then we call a method   on that object, all regular stuff.  
+  It could be that we bring in a separate component through, for example, a NuGet package, and although that code lives in a different package, it's still using the same flow.     **We'll always rely on method calls.** 
+#### If we now shift gears and start thinking of how a microservices application is working?
+it's indeed going to be a set of pretty much standalone applications really, probably APIs.  
+So, while in a regular application, the calls all happen in memory of the executing application, that's going to shift when moving to microservices.  
+We'll need inter‑process communication options to let the different applications or microservices communicate with each other.  
+In general, we can distinguish two types of communication that we'll have between our different services, **synchronous and asynchronous communication**. 
+#### synchronous communication
+- is a  communication where we have a request which is sent by the sender. 
+- The request is received by a target service, this will trigger the execution of code on that target service. 
+- Perhaps that service needs to search for a given ticket, in our case. Once found, it will send back a response to the original sender. 
+- All the time in between, the sender has been waiting for a response. 
+- The sending service cannot continue with the work until a response is received from the target.
+- For inter‑service communication, so, between different microservices, gRPC is a good choice since it provides higher speeds.
+- synchronous communication might not always be, well, the best solution
+  1. If you have been paying close attention, one thing that's clearly visible is that all services performing communication this way have a lot of knowledge about each other. 
+  2. When a shopping basket comes with a discount service, it really needs to know about the discount service, and then it will make a direct call,in our case.
+  3. maybe this is already triggering some kind of alarm in your brain. We are indeed creating tight coupling between our different microservices, which is far from ideal, and is in fact breaking one of the premises of using microservices architecture in the first place.
+  4. the communication we have done(ex: between Basket Service and Discount Service) so far has always been point to point, one service to the other.
+  5. When using microservices, we'll want to have multiple services to get notified about something happening in one service. Creating one too many implementations are going to be pretty hard to create this way.
+  6. If we need to do this with **synchronous communication**, every time a new service will be added and it needs to be updated about something happening in the system, we'll have to make changes to the code to call into that new service as well. 
+  7. That is far from great. If one microservice will be responsible to update many others making direct communication calls, this will introduce a possible bottleneck in the system since a lot of messages might need to go through, and this could potentially take a long time.
+  8. So adding new services becomes harder and harder, and potentially, over time, could stress the system in places where we didn't notice in the beginning.
+  9. Finally, since we'll have one service calling the next, and that one onto the next one, and so on, and so on, errors that happened down the chain will be hard to catch. 
+  10. Indeed, if we just rely on synchronous communication between our different microservices, so where one microservice will call into the next one, and that one will call in the next one, you get the picture, we will end up with a very long chain of synchronous calls. 
+  11. Now, not only will this take a long time while the caller, possibly the client application even, needs to wait. Another issue might be that if one service fails, it will break the entire chain. 
+  12. The entire system is only as strong as the weakest link in the chain. So while synchronous microservices communication will work for simple calls, like the one we have between the shopping basket and the discount microservice, it might not work for larger systems where we have a lot of microservices working together, triggering each other to execute an action. 
+  13. 
+
