@@ -33,7 +33,16 @@ Eventticket is a company that is selling tickets for events like concerts and mu
 - Once you have identified the components for your application, it can be as easy as creating a microservice for each of them.
 
 ## From Monolith to Microservices
-A monolith, which is basically a non‑distributed application. That means that all logic is contained in one application, not in several microservices
-It is the oldest architecture around, but it's still something you should consider when designing an application. And that's because there are benefits to it. 
-A monolith is very easy to deploy. It's just one project instead of potentially dozens of microservices.
-
+- A monolith, which is basically a non‑distributed application. That means that all logic is contained in one application, not in several microservices.    
+- It is the oldest architecture around, but it's still something you should consider when designing an application. And that's because there are benefits to it:     
+  1. A monolith is very easy to deploy. 
+  2. It's just one project instead of potentially dozens of microservices.  
+  3. That makes it also easier to test. 
+  4. Coordinating many microservices to do **an integration test**, for example, is way harder than having to deal with just one thing.
+- A monolith is well known. Every  developer starts with building monoliths because they are easy to comprehend. 
+- A monolith typically doesn't do HTTP calls or other calls over the wire except to the database perhaps. All calls are to **internal classes**, which make it faster. 
+- When building a monolith using separate components using the solid principles, internal modules can be independent from others too, **But let's face it, we developers tend to violate the modular structure of an application**
+  1. implementing all kinds of cross‑calls to modules. 
+  2. We start out with good intentions, but end up with a need for a rewrite because the architecture turned to spaghetti. 
+  3. With microservices, there is a physical separation between services, so this problem is less likely to occur. 
+- 
