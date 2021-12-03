@@ -118,15 +118,19 @@ Then we have routing. The way RabbitMQ works is by sending your messages through
 there is the management's web user interface. RabbitMQ comes of a management interface that runs in the browser. This interface lets you manage users, permissions, queues, exchanges, bindings, and much more.  
 
 ## Client-to-microservice Communication
-Direct client‑to‑microservice communication isn't always the best solution there is. Assume that your next task is adding a mobile application, like a Flutter application.  
-If we use direct client‑to‑microservice communication, it means the Xamarin app will now need to directly call the services as well.  
-the logic that we have in the Web application will also need to be written in the Flutter application. While that's not great, we can't just duplicate it, because mobile apps have different needs than a server‑side  application. 
-**Finally,we have exposed on our microservices HTTP endpoints that we can connect with from Website or from Flutter.** 
- It might be so that your microservices will expose an endpoint that is using a protocol that cannot be used from client‑side technologies.   
- We are, in my opinion, introducing tight coupling between the client and the services. The client needs to know a lot about services, and it also needs to make calls directly into the services. If we change something to the API service of our microservices, this can have an impact on the client applications as well.  
- Now, if client‑side apps need to directly invoke the microservices, so basically, into the heart of our microservices architecture, we definitely need to think about security implications this brings with it. If all our microservices are directly exposed to the outside world, this means we need to put strict measures in place for all services individually.  
- the client‑side applications, due to tight coupling, could be impacted by changes on our microservices. If we make changes on the API calls, so internally for our services, the apps using these API endpoints will also be impacted. 
- if we have a client‑side application such as an Angular or a Xamarin application using our microservices directly, it may be so that a lot of individual round trips will be required, which can have an impact on the performance of the application.  
+- Direct client‑to‑microservice communication isn't always the best solution there is. Assume that your next task is adding a mobile application, like a Flutter application.  
+- If we use direct client‑to‑microservice communication, it means the Flutter app will now need to directly call the services as well.  
+- the logic that we have in the Web application will also need to be written in the Flutter application. 
+- While that's not great, we can't just duplicate it, because mobile apps have different needs than a server‑side  application. 
+- **We have exposed on our microservices HTTP endpoints that we can connect with from Website or from Flutter.** 
+- It might be so that your microservices will expose an endpoint that is using a protocol that cannot be used from client‑side technologies.   
+- We are introducing tight coupling between the client and the services. The client needs to know a lot about services, and it also needs to make calls directly into the services. 
+- If we change something to the API service of our microservices, this can have an impact on the client applications as well.  
+ - Now, if client‑side apps need to directly invoke the microservices, so basically, into the heart of our microservices architecture, we definitely need to think about security implications this brings with it. 
+ - If all our microservices are directly exposed to the outside world, this means we need to put strict measures in place for all services individually.  
+ - the client‑side applications, due to tight coupling, could be impacted by changes on our microservices. If we make changes on the API calls, so internally for our services, the apps using these API endpoints will also be impacted. 
+ - if we have a client‑side application such as an Angular or a Xamarin application using our microservices directly, it may be so that a lot of individual round trips will be required, which can have an impact on the performance of the application. 
+ -  
  ## Gateway
  Introducing the solution, a gateway. What we'll be bringing in is basically a new service that sits in front of our microservices, providing a single point of entry to the services. It's now basically a controlled access we are exposing. Only through this entry can client apps, even the server‑side ones, access the microservices. Because now all requests go through this one service, it can also contain shared functionality. Things like authentication can now definitely be added on this one service, the gateway, that is, and thus all services are now protected in one go. Adding a gateway is extra work, but it's mostly useful if your application is somewhat larger. 
  
