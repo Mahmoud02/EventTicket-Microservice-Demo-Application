@@ -98,5 +98,22 @@ In general, we can distinguish two types of communication that we'll have betwee
   10. Indeed, if we just rely on synchronous communication between our different microservices, so where one microservice will call into the next one, and that one will call in the next one, you get the picture, we will end up with a very long chain of synchronous calls. 
   11. Now, not only will this take a long time while the caller, possibly the client application even, needs to wait. Another issue might be that if one service fails, it will break the entire chain. 
   12. The entire system is only as strong as the weakest link in the chain. So while synchronous microservices communication will work for simple calls, like the one we have between the shopping basket and the discount microservice, it might not work for larger systems where we have a lot of microservices working together, triggering each other to execute an action. 
-  13. 
+  
+#### Asynchronous communication
+The asynchronous in asynchronous communication that we're looking at here comes from the fact that we're not having a request/response cycle where the sender is waiting. 
+Now in fact, the asynchronous part will focus mostly on the fact that we have a broker and messages will be sent between different microservices. The broker will be the facilitator for this.  
+in another way, The c message sender usually doesn't wait for a response. It just sends the message to **message broker**..
+
+## Asynchronous Messaging with RabbitMQ
+RabbitMQ is one of the leading open source messaging platforms available to enterprise developers today. RabbitMQ has proven to be a stable, robust, and highly scalable solution, and is powering some of our largest enterprises.  
+
+RabbitMQ is available from rabbitmq. com. RabbitMQ implements the AMQP protocol, which stands for the Advanced Message Queue Protocol. The RabbitMQ server itself is written in the Erlang programming language, which was initially designed for the telecoms industry by Ericsson.  
+
+The RabbitMQ server is a message broker that acts as a message coordinator for the applications that you want to integrate together. This means that you can give your systems a common platform for sending and receiving messages.
+
+Messages sent into RabbitMQ will be persisted to this to make sure they are not lost if the server ever has to be restarted; and RabbitMQ is the facility to send message delivery acknowledgements to the sender of the message so they are safe in the knowledge that their message was received and persisted.  
+
+Then we have routing. The way RabbitMQ works is by sending your messages through to exchanges before they are persisted onto a queue. There are many types of exchanges that enable you to perform routing, but you can also perform even more complex routing by binding exchanges together.  
+
+there is the management's web user interface. RabbitMQ comes of a management interface that runs in the browser. This interface lets you manage users, permissions, queues, exchanges, bindings, and much more.  
 
