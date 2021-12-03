@@ -45,4 +45,20 @@ Eventticket is a company that is selling tickets for events like concerts and mu
   1. implementing all kinds of cross‑calls to modules. 
   2. We start out with good intentions, but end up with a need for a rewrite because the architecture turned to spaghetti. 
   3. With microservices, there is a physical separation between services, so this problem is less likely to occur. 
-- 
+- **when monoliths get bigger**, they get more and more complex. No matter how much you do your best to structure the code using layers and other patterns, you'll eventually come to the point where if you fix or add something in one part of the application, some other part of the application breaks. This can be mitigated writing unit tests, but you will end up with tons of them, making the application even more complex and harder to maintain.
+- Scaling out a monolith is possible, but you can only scale the whole thing, which can make scaling out very costly an/or inefficient.
+- updating to new technologies is also costly and time consuming with monoliths. Let's say we want to update a monolith to a new major version of .NET. Since we can't update piece by piece, we have to fix compatibility issues for the application as a whole. 
+- a monolith is hard to work on with multiple teams. The hardest part about creating software is the way people collaborate. The more people, the harder it is to coordinate the work effort.
+- Deployment of new versions is also an issue here because a new release can only be done when every team is ready, so a release must be highly coordinated, making deployment hard and continuous deployment very difficult.
+
+## Reasons Not to Use Microservices
+- If the application will remain small, In these cases, I would totally recommend using a monolith. 
+- The biggest downside of using microservices architecture is that understanding all parts together.
+- the whole application is harder, while dividing up the application into small microservices, each individual microservice is easier to get. But the more microservices you have, all communicating using synchronous and asynchronous communication, the harder it will get to really know how the application sticks together as a whole, keeping track of which message is received by which microservice and where messages went, for example, is hard.
+- Deploying and monitoring microservices is also no walk in the park and will require a high degree of automation to get it right each time. 
+- A team must take care of the automation for the microservices it is responsible for, requiring more skills than just coding in the team. 
+- And finding out the boundaries of a microservice is a hard and continuous process that requires discipline.
+- It's easy to start out with the microservices architecture, but end up with a distributed monolith. The teams should evaluate constantly if a microservice is still a microservice independent of the others. 
+- Also, maintaining referential integrity like we use in a relational database is not possible across microservices. 
+- monoliths are hard to maintain because of their complexity, and microservices are hard to deploy and monitor because of their complexity.
+- **The complexities around microservices are harder to tame** than the complexities around monoliths. Choose microservices when you have a really good reason to. If not, use monolithic architecture.
