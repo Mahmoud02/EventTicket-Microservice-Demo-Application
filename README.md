@@ -132,11 +132,27 @@ there is the management's web user interface. RabbitMQ comes of a management int
  - if we have a client‑side application such as an Angular or a Xamarin application using our microservices directly, it may be so that a lot of individual round trips will be required, which can have an impact on the performance of the application. 
  -  
  ## Gateway
- Introducing the solution, a gateway. What we'll be bringing in is basically a new service that sits in front of our microservices, providing a single point of entry to the services. It's now basically a controlled access we are exposing. Only through this entry can client apps, even the server‑side ones, access the microservices. Because now all requests go through this one service, it can also contain shared functionality. Things like authentication can now definitely be added on this one service, the gateway, that is, and thus all services are now protected in one go. Adding a gateway is extra work, but it's mostly useful if your application is somewhat larger. 
- 
- First, there we go again, tight coupling. Indeed, just like we had possible coupling between the clients and the microservices, we can now also start having tight coupling between the gateway and the services. Now since it is still just limited to one layer, in this case, the impact, in my humble opinion, is a bit less. However, adding a gateway means that you are introducing an extra layer. That comes with some downsides in turn, such as speed and basically also an extra layer to develop, to test. Your debug sessions might also get slightly more complex, so it's definitely something to keep in mind. Now the gateway is the entry point to the services, and it's in fact also a service. It needs to be developed, and in a larger application, it's typically owned by a team. It could become even a development bottleneck and perhaps, more importantly, scaling. Since all interactions with the microservices are now going through this gateway.  
+  - is basically a new service that sits in front of our microservices, providing a single point of entry to the services. 
+  - It's now basically a controlled access we are exposing. Only through this entry can client apps, even the server‑side ones, access the microservices. 
+  - Because now all requests go through this one service, it can also contain shared functionality. Things like authentication can now definitely be added on this one service.
+  - all services are now protected in one go. Adding a gateway is extra work, but it's mostly useful if your application is somewhat larger. 
+  - First, there we go again, tight coupling. Indeed, just like we had possible coupling between the clients and the microservices, we can now also start having tight coupling between the gateway and the services. 
+  - Now since it is still just limited to one layer, in this case, the impact, in my  opinion, is a bit less. 
+  - However, adding a gateway means that you are introducing an extra layer. That comes with some downsides in turn, such as speed and basically also an extra layer to develop, to test. 
+  - Your debug sessions might also get slightly more complex, so it's definitely something to keep in mind. 
+  - Now the gateway is the entry point to the services, and it's in fact also a service. 
+  - It needs to be developed, and in a larger application, it's typically owned by a team. 
+  - It could become even a development bottleneck and perhaps, more importantly, scaling. Since all interactions with the microservices are now going through this gateway.  
  ### Adding Different Clients and Gateways
-But with a gateway in place, one can start to wonder if this is the ideal situation. Sure, if we only have an MVC application, then we can tailor the gateway to what that MVC application will need. But, what if we decide to bring in a mobile application? Inherently, a Xamarin application works differently. Perhaps the Xamarin app needs the data returned by the gateway in a different way. Then maybe the Xamarin app will need to make different calls to the gateway and start puzzling different responses together.
-All of these, well, so‑called clients might prefer answers from the gateway in a different way. We have already established that adding all these different requests in one single gateway is far from ideal. You'd be creating a new monolith on top of all your microservices. Instead, what I think is a better approach is simply introducing different gateways specific for the client. 
-What we are doing here is indeed creating a different back end for different front ends. That's why this approach is often referred to as the BFF, the back end for front end. This offers the highest level of flexibility while still hiding the real microservices from the front ends. Indeed, some code might be duplicated, but again, that outweighs the disadvantages we'd get otherwise.
+- But with a gateway in place, one can start to wonder if this is the ideal situation. Sure, if we only have an MVC application, then we can tailor the gateway to what that MVC application will need. 
+- But, what if we decide to bring in a mobile application? Inherently, a Flutter application works differently. 
+- Perhaps the Flutter app needs the data returned by the gateway in a different way. 
+- Then maybe the Flutter app will need to make different calls to the gateway and start puzzling different responses together.
+- clients might prefer answers from the gateway in a different way. 
+- We have already established that adding all these different requests in one single gateway is far from ideal. You'd be creating a new monolith on top of all your microservices. 
+- Instead, what  is a better approach is simply introducing different gateways specific for the client. 
+- What we are doing here is indeed creating a different back end for different front ends. 
+- That's why this approach is often referred to as the **BFF**, the back end for front end. 
+- This offers the highest level of flexibility while still hiding the real microservices from the front ends. 
+- Indeed, some code might be duplicated, but again, that outweighs the disadvantages we'd get otherwise.
  
