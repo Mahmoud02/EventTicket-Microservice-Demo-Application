@@ -5,6 +5,7 @@ using EventTicket.Web.Models;
 using EventTicket.Web.Models.Api;
 using EventTicket.Web.Models.View;
 using EventTicket.Web.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EventTicket.Web.Controllers

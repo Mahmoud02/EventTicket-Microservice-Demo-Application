@@ -1,5 +1,7 @@
 using EventTicket.Web.Models;
 using EventTicket.Web.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -42,8 +44,29 @@ namespace EventTicket.Web
             services.AddHttpClient<IDiscountService, DiscountService>(c =>
                 c.BaseAddress = new Uri(config["ApiConfigs:Discount:Uri"]));
 
+            services.AddHttpContextAccessor();
+
             services.AddSingleton<Settings>();
             services.AddControllersWithViews();
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+            })
+            .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
+            .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
+            {
+                options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.Authority = "https://localhost:7000/";
+                options.ClientId = "eventticket";
+                options.ResponseType = "code";
+                options.SaveTokens = true;
+                options.ClientSecret = "ce766e16-df99-411d-8d31-0f5bbc6b8eba";
+                options.GetClaimsFromUserInfoEndpoint = true;
+                options.Scope.Add("shoppingbasket.fullaccess");
+                options.Scope.Add("eventticketgateway.fullaccess");
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -65,6 +88,7 @@ namespace EventTicket.Web
             app.UseRouting();
 
             app.UseAuthorization();
+            app.UseAuthentication();
 
             app.UseEndpoints(endpoints =>
             {
