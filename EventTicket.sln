@@ -35,9 +35,18 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventTicket.Gateway.Web", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gateway.Shared", "Gateway.Shared\Gateway.Shared.csproj", "{50FF423D-B115-4846-A23D-79D370C703FB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventTicket.Gateway", "EventTicket.Gateway\EventTicket.Gateway.csproj", "{31070F0B-B89D-4326-8BC6-BD86BCCB03ED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventTicket.Gateway", "EventTicket.Gateway\EventTicket.Gateway.csproj", "{31070F0B-B89D-4326-8BC6-BD86BCCB03ED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventTicket.Services.Identity", "EventTicket.Services.Identity\EventTicket.Services.Identity.csproj", "{EA0DADC0-28C3-4BFE-A0FF-2BBDE8CA6E1C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventTicket.Services.Identity", "EventTicket.Services.Identity\EventTicket.Services.Identity.csproj", "{EA0DADC0-28C3-4BFE-A0FF-2BBDE8CA6E1C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6D68E897-6C78-4878-BE39-C972B469264C}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose.yml = docker-compose.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{DACB1DB5-4542-4992-9002-DB161708366D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventTicket.Common", "EventTicket.Common\EventTicket.Common.csproj", "{4A87A866-E665-459A-A5C7-9028058FB1AB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -101,6 +110,10 @@ Global
 		{EA0DADC0-28C3-4BFE-A0FF-2BBDE8CA6E1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EA0DADC0-28C3-4BFE-A0FF-2BBDE8CA6E1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EA0DADC0-28C3-4BFE-A0FF-2BBDE8CA6E1C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A87A866-E665-459A-A5C7-9028058FB1AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A87A866-E665-459A-A5C7-9028058FB1AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A87A866-E665-459A-A5C7-9028058FB1AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A87A866-E665-459A-A5C7-9028058FB1AB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -119,6 +132,7 @@ Global
 		{50FF423D-B115-4846-A23D-79D370C703FB} = {B662B4F6-856C-4D80-B075-C35689B74EC4}
 		{31070F0B-B89D-4326-8BC6-BD86BCCB03ED} = {B662B4F6-856C-4D80-B075-C35689B74EC4}
 		{EA0DADC0-28C3-4BFE-A0FF-2BBDE8CA6E1C} = {75753FFC-4216-46C0-9743-C1FE33F32605}
+		{4A87A866-E665-459A-A5C7-9028058FB1AB} = {DACB1DB5-4542-4992-9002-DB161708366D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D169BEC5-E288-4639-9E23-9D59D7A026B0}

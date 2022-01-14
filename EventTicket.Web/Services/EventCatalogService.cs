@@ -1,5 +1,6 @@
 ﻿using EventTicket.Web.Extensions;
 using EventTicket.Web.Models.Api;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -10,34 +11,91 @@ namespace EventTicket.Web.Services
     public class EventCatalogService : IEventCatalogService
     {
         private readonly HttpClient client;
+        private readonly ILogger<EventCatalogService> logger;
 
-        public EventCatalogService(HttpClient client)
+        public EventCatalogService(HttpClient client, ILogger<EventCatalogService> logger)
         {
             this.client = client;
+            this.logger = logger;
         }
 
         public async Task<IEnumerable<Event>> GetAll()
         {
-            var response = await client.GetAsync("api/events");
-            return await response.ReadContentAs<List<Event>>();
+            try
+            {
+                var response = await client.GetAsync("api/events");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return await response.ReadContentAs<List<Event>>();
+                }
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, "An unexpected exception occurred when loading event data");
+            }
+
+            return Array.Empty<Event>();
+
         }
 
         public async Task<IEnumerable<Event>> GetByCategoryId(Guid categoryid)
         {
-            var response = await client.GetAsync($"api/events/?categoryId={categoryid}");
-            return await response.ReadContentAs<List<Event>>();
+            try
+            {
+                var response = await client.GetAsync($"api/events/?categoryId={categoryid}");
+                return await response.ReadContentAs<List<Event>>();
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, "An unexpected exception occurred when loading Category data");
+
+            }
+
+            return Array.Empty<Event>();
         }
 
         public async Task<Event> GetEvent(Guid id)
         {
-            var response = await client.GetAsync($"api/events/{id}");
-            return await response.ReadContentAs<Event>();
+            using var scope = logger.BeginScope("Loading event {TicketEventId}", id);
+            try
+            {
+                var response = await client.GetAsync($"/api/events/{id}");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var @event = await response.ReadContentAs<Event>();
+
+                    logger.LogDebug("Successfully loaded event '{TicketEventName}'", @event.Name);
+
+                    return @event;
+                }
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, "An unexpected exception occurred when loading event data");
+            }
+
+            logger.LogWarning("Returning null event");
+            return null;
+            
         }
 
         public async Task<IEnumerable<Category>> GetCategories()
         {
-            var response = await client.GetAsync("api/categories");
-            return await response.ReadContentAs<List<Category>>();
+            try
+            {
+                var response = await client.GetAsync("api/categories");
+                return await response.ReadContentAs<List<Category>>();
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, "An unexpected exception occurred when loading categories data");
+
+            }
+
+            return Array.Empty<Category>();
+           
         }
 
     }

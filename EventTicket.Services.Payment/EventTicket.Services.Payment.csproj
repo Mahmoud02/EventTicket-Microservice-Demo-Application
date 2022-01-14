@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\EventTicket.Common\EventTicket.Common.csproj" />
     <ProjectReference Include="..\Messages\Messages.csproj" />
     <ProjectReference Include="..\MessagingBus\MessagingBus.csproj" />
   </ItemGroup>
