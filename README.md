@@ -155,4 +155,60 @@ there is the management's web user interface. RabbitMQ comes of a management int
 - That's why this approach is often referred to as the **BFF**, the back end for front end. 
 - This offers the highest level of flexibility while still hiding the real microservices from the front ends. 
 - Indeed, some code might be duplicated, but again, that outweighs the disadvantages we'd get otherwise.
+
+ ## Cross Cutting Concerns
+Cross cutting concerns are common methods provided by a specific service used by all layers in an application; **“cutting through the whole application”**.
+Examples are:
+- Logging
+- Caching
+- Authorisation
+- Auditing
+- Error handling
+### Logging
+Logging is used by applications at runtime to write messages containing details of operational events as they occur. The information contained within log messages will be used to understand the historical behavior of a service. Logs are used to record and identify errors which may require further investigation. Logs are often the primary source of information that a developer has available when diagnosing a bug or failure reported by an end user. It is important to ensure that your services record all critical and pertinent information as log messages, in case you later depend upon it. 
+
+When we have a monolithic application architecture, we typically write log messages to a single log file or some form of output. This contains the log messages for the entire application. When developing using distributed microservices, the challenge of logging becomes a little bit more complex. We now have activity taking place across multiple services. By default, this may result in many individual log files, each containing only a small part of the information about a request.
+
+When using individual log files, a developer will have to search across them to build a complete picture of what happened. Aligning disparate files can be difficult and becomes progressively more complex as additional microservices are introduced. How does one interpret these many log files to glean the important information needed to understand what went wrong? 
+
+One of the early decisions we must take when writing code is choosing what to log and when. Each microservice may have different requirements, and the correct choice depends on how crucial that service is to the overall operation of your application. 
+
+A balance between logging too much and too little must be struck. Logging too little may make your log files fundamentally useless, but logging too much information will increase your storage costs and also the challenge of identifying relevant log messages within the noise. Log messages themselves should contain enough data so that they're useful when they're being analyzed. 
+
+An important consideration is that we must ensure that we don't expose sensitive or secure data into log files. Sensitive data includes information such as passwords, credit card details, and personally identifiable information. Allowing such data to leak out of secured applications introduces risks. With legislation such as GDPR, we also need to be careful about storing personal information in log messages which cannot easily be deleted should a user request that their data is erased. For this reason, recording just the IDs of resources is generally a better practice when it's practical to do so. The data for the resource can always be looked up when reviewing the log files. If a user requests the deletion of their personal data, we no longer have the potential challenge of removing it from log files. This approach also reduces the required storage for log messages by avoiding duplicated data.
+
+Each log message is tagged with a particular log level. At runtime we can use application configuration to filter out which messages actually get recorded. When events such as exceptions or errors occur, we most likely want to record all of them for every occurrence and investigate each one. Other data may be useful in understanding the conditional flow of a request through an application but does not indicate a failure. We may want to filter these messages once the application is running in production.
+
+ASP.NET  supports the following log levels. 
+1. The **trace log** level is used for the most detailed log messages.
  
+These messages may contain sensitive data and should only be used during development and never enabled in production. 
+
+2. The **debug log** level is generally used for verbose and detailed logging during development. 
+
+It's not recommended for general use in production, as it will likely cause a high volume of log messages, which can be costly to store and hard to interpret. You may choose to enable debug logging in production for a short period of time when investigating a failure or bug which is hard to reproduce in development. Doing so may provide some helpful insights into the conditions which led to the failure and the steps needed to reproduce the problem. 
+
+3. The **information log** level is used to track the general flow of requests or operations in the application. 
+
+This may be enabled in production to confirm expected behavior, particularly after new releases occur. After a period of reliable operation, it may be disabled to reduce log storage costs and overall noise. 
+
+4. The **warning log** level should be used to record noncritical but abnormal or unexpected events.
+
+These events should not result in an application crash, but are significant enough to warrant further investigation. An example might include handling an exception in a catch block. We may have handled the exception and avoided a complete failure, but we probably want to investigate why an exception was thrown in the first place.
+
+5. The **error log** level should be used for exceptions or errors which cannot be gracefully handled.
+ 
+Error messages do not indicate a complete application failure but an error that may impact one or more users. Typically, these should be investigated promptly to resolve the fault before it affects too many other users. 
+
+6. The final log level is **critical**, which is reserved for major failures which require immediate attention.
+ 
+This may be faults which are about to cause the application to crash or cause it to stop handling requests. Examples include inaccessible critical dependencies such as a database server, which may result in data loss, and environmental issues such as a host being out of memory or disk capacity.
+
+**Choosing the correct log level for your messages is important so that you can filter them for different environments by using configuration without having to add or remove the logging code manually each time.**
+
+In microservice architectures, it's therefore a common requirement to send log files to a centralized logging service so that they can be stored and queried together. A popular choice for this is the suite of open source Elastic products, commonly referred to as the **ELK Stack**. 
+
+Log messages are indexed into Elasticsearch, a schema‑free document store. Logstash can be used for additional log shipping and further processing of log data. Finally, Kibana can be used as a data visualization tool to rapidly filter and search across the combined log messages.
+
+
+
